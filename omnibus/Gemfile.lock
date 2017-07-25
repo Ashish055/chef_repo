@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/chef/license_scout
-  revision: 75ffc87dd36b1be3b49a4a3dfe026734f48e146f
+  revision: e0d15c52f29dadc8d057616dfadd2c39bfc24beb
   specs:
     license_scout (0.1.3)
       ffi-yajl (~> 2.2)
@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: https://github.com/chef/omnibus
-  revision: 0224f78be5d8d14c323882786fd210a8c64842ba
+  revision: 2215d10c1d13c30f058f126806bff09807706c41
   specs:
     omnibus (5.6.1)
       aws-sdk (~> 2)
@@ -25,7 +25,8 @@ GIT
 
 GIT
   remote: https://github.com/chef/omnibus-software
-  revision: 18fa328dce4f8fb68a87734c8a0b9c3dcc4a8f18
+  revision: c937750a4570e26e9a6650002c937beddb218068
+  branch: ssd/libiconv-update
   specs:
     omnibus-software (4.0.0)
       chef-sugar (>= 3.4.0)
@@ -42,14 +43,14 @@ GEM
     addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
     awesome_print (1.8.0)
-    aws-sdk (2.10.9)
-      aws-sdk-resources (= 2.10.9)
-    aws-sdk-core (2.10.9)
+    aws-sdk (2.10.16)
+      aws-sdk-resources (= 2.10.16)
+    aws-sdk-core (2.10.16)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.10.9)
-      aws-sdk-core (= 2.10.9)
-    aws-sigv4 (1.0.0)
+    aws-sdk-resources (2.10.16)
+      aws-sdk-core (= 2.10.16)
+    aws-sigv4 (1.0.1)
     berkshelf (6.2.0)
       addressable (~> 2.3, >= 2.3.4)
       berkshelf-api-client (>= 4.0.0)
@@ -117,7 +118,7 @@ GEM
       fuzzyurl
       mixlib-config (~> 2.0)
       mixlib-shellout (~> 2.0)
-    chef-sugar (3.4.0)
+    chef-sugar (3.5.0)
     chef-zero (5.3.2)
       ffi-yajl (~> 2.2)
       hashie (>= 2.0, < 4.0)
@@ -170,8 +171,8 @@ GEM
     mixlib-cli (1.7.0)
     mixlib-config (2.2.4)
     mixlib-log (1.7.1)
-    mixlib-shellout (2.2.7)
-    mixlib-versioning (1.1.0)
+    mixlib-shellout (2.3.2)
+    mixlib-versioning (1.2.1)
     molinillo (0.5.7)
     multi_json (1.12.1)
     multipart-post (2.0.0)
@@ -303,4 +304,4 @@ DEPENDENCIES
   rspec
 
 BUNDLED WITH
-   1.15.1
+   1.15.2
