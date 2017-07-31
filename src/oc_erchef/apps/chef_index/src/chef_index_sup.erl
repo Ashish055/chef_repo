@@ -28,7 +28,8 @@
 %% API
 -export([
          server_for_vhost/1,
-         start_link/0
+         start_link/0,
+         maybe_rabbitmq_monitoring/0
         ]).
 
 %% Supervisor callbacks
@@ -49,8 +50,21 @@ init([]) ->
     error_logger:info_msg("Starting chef_index_sup.~n", []),
     error_logger:info_msg("Creating HTTP pool for Solr.~n"),
     chef_index_http:create_pool(),
+    maybe_rabbitmq_monitoring(),
     Children = child_spec(),
     {ok, {{one_for_one, 60, 10}, Children}}.
+
+maybe_rabbitmq_monitoring() ->
+    case envy:get(chef_index, search_queue_mode, rabbitmq, envy:one_of([rabbitmq, batch, inline])) of
+        rabbitmq ->
+            Config = envy:get(chef_index, rabbitmq_index_management_service, [], any),
+            Username = proplists:get_value(user, Config),
+            Config1 = proplists:delete(user, Config),
+            {ok, Password} = chef_secrets:get(<<"rabbitmq">>, <<"management_password">>),
+            chef_index_queue:create_management_pool(Username, Password, Config1);
+        _ ->
+            ok
+    end.
 
 %% Return a spec for a bunnyc gen_server or the chef_index_batch gen_server based on the
 %% search_queue_mode configuration.

@@ -29,7 +29,8 @@
          delete/4,
          add/5,
          add_batch/1,
-         search_provider/0
+         search_provider/0,
+         ping/0
         ]).
 
 -include("chef_solr.hrl").
@@ -187,3 +188,11 @@ send_to_solr(batch, Doc) ->
     chef_index_batch:add_item(Doc);
 send_to_solr(inline, Doc) ->
     chef_index_expand:send_item(Doc).
+
+ping() ->
+    case queue_mode() of
+        rabbitmq ->
+            chef_index_queue:ping(envy:get(chef_index, rabbitmq_vhost, binary));
+        _ ->
+            pong
+    end.
