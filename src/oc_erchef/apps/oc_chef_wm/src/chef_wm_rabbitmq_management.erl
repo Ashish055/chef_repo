@@ -28,8 +28,8 @@
 -endif.
 
 -export([calc_ratio_and_percent/2,
-         get_max_length/2, % NOTE: exported for testing only? 
-         get_current_length/3, % NOTE: exported for testing only?
+         get_max_length/2,
+         get_current_length/3,
          create_pool/2,
          delete_pool/1,
          check_current_queue_state/4,
@@ -39,7 +39,6 @@
         ]).
 
 
-% -define(POOLNAME, rabbitmq_management_service).
 -define(LOG_THRESHOLD, 0.8).
 
 -type max_length() :: integer().
