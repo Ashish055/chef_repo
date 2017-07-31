@@ -127,11 +127,11 @@
             data_collector,
             <% end %>
             oc_chef_authz,
-            <% if node['private_chef']['dark_launch']['actions'] %>
+            <% if node['private_chef']['dark_launch']['actions'] && node['private_chef']['rabbitmq']['management_enabled'] %>
             oc_chef_action,
             <% end %>
-            chef_sql,
             chef_index,
+            chef_sql,
             chef_<%= node['private_chef']['opscode-erchef']['search_provider'] %>
         ]},
         {base_resource_url, <%= @helper.erl_atom_or_string(node['private_chef']['opscode-erchef']['base_resource_url']) %>},
@@ -233,6 +233,7 @@
             {ibrowse_options, <%= @solr_ibrowse_options %>}
         ]},
         {rabbitmq_index_management_service, [
+            {enabled, <%= @node['private_chef']['rabbitmq']['management_enabled'] %>},
             {user, "<%= @node['private_chef']['rabbitmq']['management_user'] %>"},
             <% if node['private_chef']['fips_enabled'] -%>
             {root_url, "http://<%= node['private_chef']['rabbitmq']['vip'] %>:<%= @node['private_chef']['rabbitmq']['management_port'] %>/api"},

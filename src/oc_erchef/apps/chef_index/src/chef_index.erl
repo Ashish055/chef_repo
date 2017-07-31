@@ -192,7 +192,14 @@ send_to_solr(inline, Doc) ->
 ping() ->
     case queue_mode() of
         rabbitmq ->
-            chef_index_queue:ping(envy:get(chef_index, rabbitmq_vhost, binary));
+            Config = envy:get(chef_index, rabbitmq_index_management_service, [], any),
+            Enabled = proplists:get_value(enabled, Config),
+            case Enabled of
+                true ->
+                    chef_index_queue:ping(envy:get(chef_index, rabbitmq_vhost, binary));
+                _ ->
+                    pong
+            end;
         _ ->
             pong
     end.

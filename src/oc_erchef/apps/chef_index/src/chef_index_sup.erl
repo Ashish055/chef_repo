@@ -58,10 +58,16 @@ maybe_rabbitmq_monitoring() ->
     case envy:get(chef_index, search_queue_mode, rabbitmq, envy:one_of([rabbitmq, batch, inline])) of
         rabbitmq ->
             Config = envy:get(chef_index, rabbitmq_index_management_service, [], any),
-            Username = proplists:get_value(user, Config),
-            Config1 = proplists:delete(user, Config),
-            {ok, Password} = chef_secrets:get(<<"rabbitmq">>, <<"management_password">>),
-            chef_index_queue:create_management_pool(Username, Password, Config1);
+            {LocalConfig, HttpConfig} = proplists:split(Config, [enabled, user]),
+            case LocalConfig of
+                [[{enabled, true}], [{user, Username}]] ->
+                    {ok, Password} = chef_secrets:get(<<"rabbitmq">>, <<"management_password">>),
+                    chef_index_queue:create_management_pool(Username, Password, HttpConfig);
+                _ ->
+                    error_logger:info_msg("Rabbitmq monitoring is disabled. "
+                                          "chef_index will not check rabbitmq health.~n"),
+                    ok
+            end;
         _ ->
             ok
     end.
