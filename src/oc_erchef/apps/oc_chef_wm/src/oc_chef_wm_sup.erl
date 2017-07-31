@@ -17,7 +17,7 @@
 
 -include("oc_chef_wm.hrl").
 
--define(QUEUE_MONITOR_SETTING(Key, Default), oc_chef_action_queue:get_rabbit_queue_monitor_setting(Key, Default)).
+-define(QUEUE_MONITOR_SETTING(Key, Default), oc_chef_action_queue_config:get_rabbit_queue_monitor_setting(Key, Default)).
 
 %% @spec start_link() -> ServerRet
 %% @doc API for starting the supervisor.
@@ -74,7 +74,7 @@ maybe_start_action(true, Workers) ->
 
     case QMEnabled of
         true ->
-            {PoolNameAtom, PoolConfig} = oc_chef_action_queue:get_rabbit_management_pool_setting(),
+            {PoolNameAtom, PoolConfig} = oc_chef_action_queue_config:get_rabbit_management_pool_setting(),
             chef_wm_rabbitmq_management:create_pool(PoolNameAtom, PoolConfig),
             {MaxLength, CurrentLength} = check_actions_queue_at_capacity(Vhost, Queue),
             ActionQueueMonitoringSpec = {chef_wm_actions_queue_monitoring,
@@ -96,7 +96,7 @@ check_actions_queue_at_capacity(Vhost, Queue) ->
     PreventStartupOnCap = ?QUEUE_MONITOR_SETTING(prevent_erchef_startup_on_full_capacity, false),
     {MaxLength, CurrentLength, QueueAtCapacity} =
         chef_wm_rabbitmq_management:sync_check_queue_at_capacity(
-          oc_chef_action_queue:get_rabbit_management_pool_name(), Vhost, Queue),
+          oc_chef_action_queue_config:get_rabbit_management_pool_name(), Vhost, Queue),
     case QueueAtCapacity of
         true ->
             case PreventStartupOnCap of

@@ -35,7 +35,7 @@
 -define(ACTIONS_EXCHANGE, <<"actions">>).
 
 -define(Q_SETTING(K, V),
-        oc_chef_action_queue:set_rabbit_queue_monitor_setting(K,V)).
+        oc_chef_action_queue_config:set_rabbit_queue_monitor_setting(K,V)).
 
 init_per_suite(InitialConfig) ->
     UseFakeRabbit =
@@ -134,7 +134,7 @@ basic_queue_monitor(Config) ->
 
 
     % don't drop messages from now on
-    oc_chef_action_queue:set_rabbit_queue_monitor_setting(drop_on_full_capacity, false),
+    oc_chef_action_queue_config:set_rabbit_queue_monitor_setting(drop_on_full_capacity, false),
 
     make_data_bag(?CLIENT_NAME, 13),
     make_data_bag(?CLIENT_NAME, 14),
